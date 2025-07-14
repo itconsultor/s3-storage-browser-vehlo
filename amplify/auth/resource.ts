@@ -7,6 +7,30 @@ import { defineAuth } from "@aws-amplify/backend";
 export const auth = defineAuth({
   loginWith: {
     email: true,
+    externalProviders: {
+      oidc: [
+        {
+          name: "AzureOIDC",
+          /**
+           * Since in Amplify, the TypeScript definition of 
+           * clientId and clientSecret is BackendSecret,
+           * we need to store the values in Amplify's secret manager.
+           */
+          clientId: secret("authClient"),
+          clientSecret: secret("authSecret"),
+          issuerUrl: "https://login.microsoftonline.com/809bacef-ae55-4f6f-8b7e-48dd4d5b247f/v2.0",
+          scopes: ["openid", "profile", "email", "name"], 
+        },
+      ],
+      logoutUrls: [
+        "https://main.d3noy8z3i5gnx3.amplifyapp.com/",
+        // your staging / production domain later
+      ],
+      callbackUrls: [
+        "https://main.d3noy8z3i5gnx3.amplifyapp.com/",
+        // your staging / production domain later
+      ],
+    },
   },
   groups: ['admin','read','editor']
 });

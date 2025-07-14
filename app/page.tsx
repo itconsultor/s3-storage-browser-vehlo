@@ -2,6 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { generateClient } from "aws-amplify/data";
+import {
+  fetchAuthSession,
+  signInWithRedirect,
+  signOut,
+} from "aws-amplify/auth";
 import type { Schema } from "@/amplify/data/resource";
 import "./../app/app.css";
 import { Amplify } from "aws-amplify";
@@ -15,23 +20,19 @@ Amplify.configure(outputs);
 const client = generateClient<Schema>();
 
 export default function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
 
-  function listTodos() {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
+  const handleSignInWithRedirect = () => {
+    signInWithRedirect({
+      provider: {
+        custom: "AzureOIDC",
+      },
     });
-  }
+  };
 
-  useEffect(() => {
-    listTodos();
-  }, []);
-
-  function createTodo() {
-    client.models.Todo.create({
-      content: window.prompt("Todo content"),
-    });
-  }
+  const handleGetCurrentUser = async () => {
+    const session = await fetchAuthSession();
+    console.log(session);
+  };
 
   return (
     <Authenticator 
@@ -47,6 +48,31 @@ export default function App() {
               />
               <h2 style={{ margin: '10px 0' }}>Welcome to Vehlo S3 Bucket files</h2>
             </div>
+          );
+        },
+        Footer() {
+          return (
+            <button
+              onClick={handleSignInWithRedirect}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '8px 12px',
+                backgroundColor: '#0078D4',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                fontSize: '14px',
+                cursor: 'pointer'
+              }}
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg"
+                alt="Azure Logo"
+                style={{ height: '20px', marginRight: '8px' }}
+              />
+              Login with Azure
+            </button>
           );
         },
       }}
