@@ -47,11 +47,6 @@ export default function App() {
     });
   };
 
-  const handleGetCurrentUser = async () => {
-    const session = await fetchAuthSession();
-    console.log(session);
-  };
-
   return (
     <Authenticator 
       hideSignUp
@@ -70,6 +65,14 @@ export default function App() {
         },
         Footer() {
           return (
+            <div 
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+              }}
+            >
             <button
               onClick={handleSignInWithRedirect}
               style={{
@@ -91,6 +94,7 @@ export default function App() {
               />
               Login with Azure
             </button>
+          </div>
           );
         },
       }}
