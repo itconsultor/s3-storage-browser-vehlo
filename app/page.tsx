@@ -88,7 +88,7 @@ export default function App() {
               />
               <h2 style={{ margin: '10px 0' }}>Welcome to Vehlo S3 Bucket files</h2>
             </div>
-            <h1>Hello {user?.signInDetails?.loginId}</h1>
+            <h1>Hello!</h1>
             <button onClick={signOut}>Sign out</button>
             {/* StorageBrowser Component */}
             <h2>Your Files</h2>
