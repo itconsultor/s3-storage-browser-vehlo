@@ -11,15 +11,15 @@ export const auth = defineAuth({
       oidc: [
         {
           name: "AzureOIDC",
-          /**
-           * Since in Amplify, the TypeScript definition of 
-           * clientId and clientSecret is BackendSecret,
-           * we need to store the values in Amplify's secret manager.
-           */
           clientId: secret("authClient"),
           clientSecret: secret("authSecret"),
           issuerUrl: "https://login.microsoftonline.com/809bacef-ae55-4f6f-8b7e-48dd4d5b247f/v2.0",
-          scopes: ["openid", "profile", "email", "name"], 
+          scopes: ["openid", "profile", "email"], 
+          attributeMapping: {
+            email: "email",
+            givenName: "given_name",
+            familyName: "family_name",
+          },
         },
       ],
       logoutUrls: [
